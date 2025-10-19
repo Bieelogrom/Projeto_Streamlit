@@ -7,6 +7,8 @@ A aplicação realiza um fluxo simples de **entrada → processamento → saída
 
 O foco **não é a lógica de negócio**, mas sim **entender como empacotar, executar e servir** uma aplicação Python em containers isolados com **Nginx como proxy reverso**.
 
+![Imagem da Atividade](img/atividade_so1.PNG)
+
 ---
 
 - https://github.com/Bieelogrom/Projeto_Streamlit.git

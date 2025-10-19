@@ -34,4 +34,4 @@ COPY . .
 EXPOSE 8501
 
 # 10. O comando para executar (agora usará o Python/Streamlit do venv)
-CMD ["streamlit", "run", "seu_app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+CMD ["streamlit", "run", "main.py", "--server.port=8501", "--server.address=0.0.0.0"]
