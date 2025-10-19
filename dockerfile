@@ -19,7 +19,7 @@ COPY requirements.txt .
 
 # 5. Instala as bibliotecas Python
 #    (Note: Não precisamos de 'venv'! O contêiner JÁ É o isolamento.)
-RUN pip3 install --no-cache-dir -r requirements.txt
+RUN pip3 install -r requirements.txt
 
 # 6. Copia TODO o resto do seu código (seu_app.py, etc.)
 #    O "." significa "copie tudo daqui" para o WORKDIR (/app)
