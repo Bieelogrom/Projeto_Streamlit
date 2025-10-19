@@ -1,31 +1,39 @@
 # 1. Imagem Base
-# Começa com a mesma imagem Alpine que sabemos que funciona.
 FROM alpine:latest
 
-# 2. Instala as dependências do S.O. (Python, pip)
-#    (Não precisamos mais do 'git' ou 'openssh' 
-#     porque vamos copiar o código em vez de clonar)
+# 2. Instala as dependências do S.O.
+#    ADICIONAMOS 'python3-venv'
 RUN apk update && apk add \
     python3 \
-    py3-pip 
+    py3-pip \
+    python3-venv \
+    ca-certificates
 
-# 3. Cria a pasta para o aplicativo dentro do contêiner
+# 3. Cria o ambiente virtual
+#    Vamos criar um venv "global" para o contêiner em /opt/venv
+RUN python3 -m venv /opt/venv
+
+# 4. A MÁGICA: Adiciona o venv ao PATH do sistema
+#    Isso garante que qualquer comando 'python' ou 'pip' 
+#    daqui para frente use o venv automaticamente.
+ENV PATH="/opt/venv/bin:$PATH"
+
+# 5. Cria a pasta de trabalho
 WORKDIR /app
 
-# 4. Copia a lista de bibliotecas PRIMEIRO
-#    Isto é um truque de cache do Docker para builds mais rápidos
+# 6. Copia a lista de bibliotecas
 COPY requirements.txt .
 
-# 5. Instala as bibliotecas Python
-#    (Note: Não precisamos de 'venv'! O contêiner JÁ É o isolamento.)
-RUN pip3 install -r requirements.txt
+# 7. Instala as bibliotecas (agora DENTRO do venv)
+#    (Usamos 'pip' e 'python' agora, pois eles vêm do PATH do venv)
+RUN pip install --upgrade pip
+RUN pip install --no-cache-dir -r requirements.txt
 
-# 6. Copia TODO o resto do seu código (seu_app.py, etc.)
-#    O "." significa "copie tudo daqui" para o WORKDIR (/app)
+# 8. Copia o resto do seu código
 COPY . .
 
-# 7. Expõe a porta que o Streamlit usa
+# 9. Expõe a porta
 EXPOSE 8501
 
-# 8. O comando para executar quando o contêiner iniciar
-CMD ["python3", "-m", "streamlit", "run", "seu_app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+# 10. O comando para executar (agora usará o Python/Streamlit do venv)
+CMD ["streamlit", "run", "seu_app.py", "--server.port=8501", "--server.address=0.0.0.0"]
