@@ -5,9 +5,7 @@ FROM alpine:latest
 #    ADICIONAMOS 'python3-venv'
 RUN apk update && apk add \
     python3 \
-    py3-pip \
-    python3-venv \
-    ca-certificates
+    py3-pip
 
 # 3. Cria o ambiente virtual
 #    Vamos criar um venv "global" para o contêiner em /opt/venv
