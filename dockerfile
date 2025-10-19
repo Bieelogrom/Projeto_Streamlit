@@ -7,8 +7,7 @@ FROM alpine:latest
 #     porque vamos copiar o código em vez de clonar)
 RUN apk update && apk add \
     python3 \
-    py3-pip \
-    ca-certificates
+    py3-pip 
 
 # 3. Cria a pasta para o aplicativo dentro do contêiner
 WORKDIR /app
